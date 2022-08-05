@@ -1,7 +1,7 @@
 import random as rand
 import time
-from termcolor import colored, cprint
-from playsound import playsound
+from termcolor import colored, cprint # pip3 install termcolor
+from playsound import playsound       # pip3 install playsound
 import os
 import sys
 

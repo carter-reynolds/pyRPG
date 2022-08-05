@@ -101,8 +101,10 @@ random_combat_messages = [
 random_mine_sounds = ["sounds/pickaxe1.wav", "sounds/pickaxe2.wav"]
 random_fish_sounds = ["sounds/fishing1.wav", "sounds/fishing2.wav"]
     
-
-
+'''
+level_check():
+Runs a check during every "rest" action to attempt and convert gained XP into a new level of any various skill.
+'''
 
 def level_check():
     
@@ -148,8 +150,12 @@ def level_check():
         cprint('XP not high enough for level up this time!' + '\n', 'red')
 
 '''
+get_cur_stats():
 In order to avoid constantly retyping out the stats I need to display after every action
 We will just use a function that gets called after every action instead cuz efficient?
+
+Not sure why the dictionaries used here didn't have to be 'global'? 
+>> Is it because this function runs within a function that already has the global access?
 '''
 def get_cur_stats():
     print('Energy: ', ply['energy'])

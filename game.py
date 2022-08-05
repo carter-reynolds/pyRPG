@@ -23,32 +23,45 @@ os.system('clear') # Start with a fresh terminal
 #TODO: Add Windows CMD Prompt/Powershell Support
 os.environ['TERM'] = 'xterm-256color'   # Mac Term only
 
-# Level and Experience Variables I will need - currently 3 tables
-# TODO: Using a dictionary may be better to match keys and values easier than remembering indexes
-player_skills = ["Mining","Fishing","Combat"]
-player_level = [0, 0, 0]
-player_exp = [0, 0, 0]
+# Common Value Dictionaries
+skill_lvl = {
+    "mining":0,
+    "fishing":0,
+    "combat":0
+}
 
-# Revelant Indexes for Changing Values:
-# 0 - Mining
-# 1 - Fishing
-# 2 - Combat
+xp = {
+    "mining":0,
+    "fishing":0,
+    "combat":0
+}
 
-# Assigning Some Default Variables
-player_energy = 20      # How much energy we start with
-player_health = 50      # How much health we start with (unused currently)
-hours_of_day_left = 16  # Default hours in a day (unused currently)
+ply = {
+    "energy": 24,
+    "hp": 100
+}
 
-# Level Stuff
-mine_xp_required = 3
-fish_xp_required = 3
-combat_xp_required = 3
+xp_to_next_lvl = {
+    "mining": 10,
+    "fishing": 10,
+    "combat": 10
+}
+
+# TODO: USE THESE
+environment_variables = {
+    "current_temp": 75,
+    "min_max_temp": [20, 110],
+    "time_of_day": ["morning", "midday", "evening", "night"],
+    "weather": ["sunny", "light_rain", "storm", "snow"]
+    }
+
 
 '''
 The next four tables are used to set up random messages that will appear every
 time an action is taken by a player. We use a random int to tell the game which
 message to ultimately display so it's entirely random
 '''
+
 # Create Random Rest Action Messages
 random_rest_messages = [
     "You stare into the fire as time passes longer into the day...",                  # 0 index
@@ -93,9 +106,10 @@ random_fish_sounds = ["sounds/fishing1.wav", "sounds/fishing2.wav"]
 
 def level_check():
     
-    global mine_xp_required
-    global fish_xp_required
-    global combat_xp_required
+    global xp
+    global skill_lvl
+    global xp_to_next_lvl
+    
     
     os.system('clear') # Clean the terminal again!
     
@@ -103,32 +117,32 @@ def level_check():
     
     time.sleep(3)
     
-    if player_exp[0] >= mine_xp_required:
-        player_level[0] += 1
-        mine_exp_new = player_exp[0] - mine_xp_required
-        player_exp[0] = mine_exp_new
-        mine_xp_required += mine_xp_required
+    if xp['mining'] >= xp_to_next_lvl['mining']:
+        skill_lvl['mining'] += 1
+        mine_exp_new = xp['mining'] - xp_to_next_lvl['mining']
+        xp['mining'] = mine_exp_new
+        xp_to_next_lvl['mining'] += xp_to_next_lvl['mining']
         
-        cprint('Mining Leveled up to: ' + str(player_level[0]) + '\n', 'green')
-        cprint('Next Level up at: ' + str(mine_xp_required) + ' XP\n', 'green')
+        cprint('Mining Leveled up to: ' + str(skill_lvl['mining']) + '\n', 'green')
+        cprint('Next Level up at: ' + str(xp_to_next_lvl['mining']) + ' XP\n', 'green')
         
-    elif player_exp[1] >= fish_xp_required:
-        player_level[1] += 1
-        fish_exp_new = player_exp[1] - fish_xp_required
-        player_exp[1] = fish_exp_new
-        fish_xp_required += fish_xp_required
+    elif xp['fishing'] >= xp_to_next_lvl['fishing']:
+        skill_lvl['fishing'] += 1
+        fish_exp_new = xp['fishing'] - xp_to_next_lvl['fishing']
+        xp['fishing'] = fish_exp_new
+        xp_to_next_lvl['fishing'] += xp_to_next_lvl['fishing']
         
-        cprint('Fishing Leveled up to: ' + str(player_level[1]) + '\n', 'green')
-        cprint('Next Level up at: ' + str(fish_xp_required) + ' XP\n', 'green')
+        cprint('Fishing Leveled up to: ' + str(skill_lvl['fishing']) + '\n', 'green')
+        cprint('Next Level up at: ' + str(xp_to_next_lvl['fishing']) + ' XP\n', 'green')
         
-    elif player_exp[2] >= combat_xp_required:
-        player_level[2] += 1
-        combat_exp_new = player_exp[2] - combat_xp_required
-        player_exp[2] = combat_exp_new
-        combat_xp_required += combat_xp_required
+    elif xp['combat'] >= xp_to_next_lvl['combat']:
+        skill_lvl['combat'] += 1
+        combat_exp_new = xp['combat'] - xp_to_next_lvl['combat']
+        xp['combat'] = combat_exp_new
+        xp_to_next_lvl['combat'] += xp_to_next_lvl['combat']
         
-        print('Combat Leveled up to: ' + str(player_level[2]) + '\n', 'green')
-        cprint('Next Level up at: ' + str(combat_xp_required) + ' XP\n', 'green')
+        crint('Combat Leveled up to: ' + str(skill_lvl['combat']) + '\n', 'green')
+        cprint('Next Level up at: ' + str(xp_to_next_lvl['combat']) + ' XP\n', 'green')
         
     else:
         cprint('XP not high enough for level up this time!' + '\n', 'red')
@@ -138,45 +152,40 @@ In order to avoid constantly retyping out the stats I need to display after ever
 We will just use a function that gets called after every action instead cuz efficient?
 '''
 def get_cur_stats():
-    print('Energy: ', player_energy)
-    print('Health: ', player_health, '\n')
+    print('Energy: ', ply['energy'])
+    print('Health: ', ply['hp'], '\n')
     
-    print('Player Experience:')
-    print('Mining XP: ', player_exp[0])
-    print('Fishing XP: ', player_exp[1])
-    print('Combat XP: ', player_exp[2], '\n')
+    cprint('Player Experience:', 'yellow')
+    print('Mining XP: ', xp['mining'])
+    print('Fishing XP: ', xp['fishing'])
+    print('Combat XP: ', xp['combat'], '\n')
     
-    print('Player Levels:')
-    print('Mining Level: ', player_level[0])
-    print('Fishing Level: ', player_level[1])
-    print('Combat Level: ', player_level[2], '\n')
+    cprint('Player Levels:', 'yellow')
+    print('Mining Level: ', skill_lvl['mining'])
+    print('Fishing Level: ', skill_lvl['fishing'])
+    print('Combat Level: ', skill_lvl['combat'], '\n')
     
 
         
     
 # This is most of the game's logic within a single function - please don't judge me
 def game_main():
+
+    global ply
+    global xp
+    global skill_lvl
+    global xp_to_next_lvl
     
      # These are the only input values that can be used in the game currently
     valid_inputs = ["rest", "mine", "fish", "combat"]
     
-    '''
-    These next 3 variables are global because they are established initially outside
-    the scope of this function. There is probably a better way to do this, but it worked
-    and I did not want to mess with it more yet.
-    '''
-    
-    global player_energy 
-    global player_health
-    global player_level
-    
-    
+
     while True: # Keeps the game going after every action (always truthy unless error)
         
         get_input = input("What Action Are You Doing? (rest, mine, fish, combat)\n\n")
         os.system('clear') # Clean the terminal again!
         
-        if player_energy > 0: # If player_energy is greater than 0, keep going
+        if ply['energy'] > 0: # If player_energy is greater than 0, keep going
         
             if get_input in valid_inputs: # If input is in valid_inputs, keep going
             
@@ -186,9 +195,7 @@ def game_main():
                     message_rest = random_rest_messages[(rand.randint(0,4))]
                     print(message_rest, '\n')
                     
-                    
-                    #Increase energy by 1 for resting
-                    player_energy = player_energy + 1
+                    ply['energy'] += 1
                     
                     #Check for possible level increases
                     level_check()
@@ -199,61 +206,60 @@ def game_main():
                     
                 elif get_input == "mine":
                     
-                    
                     #Display a random mine message
                     message_mine = random_mine_messages[(rand.randint(0,4))]
                     print(message_mine, '\n')
                     
                     # Play a random related sound
-                    #sound_mine = random_mine_sounds[(rand.randint(0,1))]
-                    #playsound(sound_mine)
+                    sound_mine = random_mine_sounds[(rand.randint(0,1))]
+                    # playsound(sound_mine)
                     
                     #Decrease energy by 1, increase mining XP by 1, display full stats
-                    player_energy = player_energy - 1
-                    player_exp[0] = player_exp[0] + 1 
+                    ply['energy'] -= 1
+                    xp['mining'] += 1 
+
                     get_cur_stats()
                     
                     
                 elif get_input == "fish":
-                    
                     
                     #Display random fish message
                     message_fish = random_fish_messages[(rand.randint(0,4))]
                     print(message_fish, '\n')
                     
                     # Play a random related sound
-                    #sound_fish = random_fish_sounds[(rand.randint(0,1))]
-                    #playsound(sound_fish)
+                    sound_fish = random_fish_sounds[(rand.randint(0,1))]
+                    # playsound(sound_fish)
                     
-                    #Decrease energy by 1, increase fishing XP by 1, display full stats
-                    player_energy = player_energy - 1
-                    player_exp[1] = player_exp[1] + 1 
+                    ply['energy'] -= 1
+                    xp['fishing'] += 1
+
                     get_cur_stats()
                     
                 
                 elif get_input == "combat": # Should rename to "combat" instead?
+
                     message_combat = random_combat_messages[(rand.randint(0,4))]
                     print(message_combat, '\n')
-                    player_energy = player_energy - 2
-                    player_exp[2] = player_exp[2] + 3 # Add 1 to Combat XP
+
+                    ply['energy'] -= 1
+                    xp['combat'] += 1 # Add 1 to Combat XP
+
                     get_cur_stats()
                     
                     
             else:
                 cprint("Not a Valid Input! Try again.", 'red')
                 
-        elif player_energy == 0 and get_input != "rest":
+        elif ply['energy'] == 0 and get_input != "rest":
             cprint("You are too tired. Consider resting!", 'red') 
             
         else:   
             message_rest = random_rest_messages[(rand.randint(0,4))]
             print(message_rest)
-            player_energy = player_energy + 1  
+
+            ply['energy'] += 1  
             level_check()
             get_cur_stats()                     
      
 game_main() # Starts the game
-        
-        
-
-

@@ -1,5 +1,4 @@
 import random as rand
-import globals.py 
 import time
 from termcolor import colored, cprint
 from playsound import playsound

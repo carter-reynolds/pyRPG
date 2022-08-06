@@ -145,12 +145,12 @@ def get_cur_stats():
     print_bar('Energy: ', ply['energy'], ply['max_energy'], 'blue')
     print_bar('Health: ', ply['hp'], ply['max_hp'], 'red')
     
-    cprint('Player Experience:', 'yellow')
+    print(colored('Player Experience:', 'yellow', attrs=['bold', 'underline']))
     print_bar('Mining XP: ', xp['mining'], xp_to_next_lvl['mining'])
     print_bar('Fishing XP: ', xp['fishing'], xp_to_next_lvl['fishing'])
     print_bar('Combat XP: ', xp['combat'], xp_to_next_lvl['combat'])
     
-    cprint('Player Levels:', 'yellow')
+    print(colored('Player Levels:', 'yellow', attrs=['bold', 'underline']))
     print('Mining Level: ', skill_lvl['mining'])
     print('Fishing Level: ', skill_lvl['fishing'])
     print('Combat Level: ', skill_lvl['combat'], '\n')

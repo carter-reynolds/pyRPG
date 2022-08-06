@@ -55,12 +55,7 @@ environment_variables = {
     }
 
 
-'''
-The next four tables are used to set up random messages that will appear every
-time an action is taken by a player. We use a random int to tell the game which
-message to ultimately display so it's entirely random
-'''
-    
+# Random sounds to be used upon actions
 random_mine_sounds = ["sounds/pickaxe1.wav", "sounds/pickaxe2.wav"]
 random_fish_sounds = ["sounds/fishing1.wav", "sounds/fishing2.wav"]
     
@@ -70,7 +65,7 @@ Runs a check during every "rest" action to attempt and convert gained XP into a 
 '''
 
 
-def level_check():
+def level_check():  # This is going to get messy quick when there are more skills...
     
     global xp
     global skill_lvl
@@ -85,7 +80,7 @@ def level_check():
     '''
     The next IFs are for converting XP per skill into a new level of any given skill
     '''
-
+    # TODO: Is this really the most efficient way to do this?
     if xp['mining'] >= xp_to_next_lvl['mining']:  # If current amount of mining xp > what is required for next level..
         skill_lvl['mining'] += 1                                # Add mining +1 to mining level
         mine_exp_new = xp['mining'] - xp_to_next_lvl['mining']  # current skill xp - xp spent to level up = mine_exp_new

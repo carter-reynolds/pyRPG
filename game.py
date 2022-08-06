@@ -2,6 +2,7 @@ import random as rand
 import time
 from termcolor import colored, cprint # pip3 install termcolor
 from playsound import playsound       # pip3 install playsound
+from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
 import os
 import sys
 
@@ -38,7 +39,9 @@ xp = {
 
 ply = {
     "energy": 24,
-    "hp": 100
+    "max_energy": 24,
+    "hp": 100,
+    "max_hp": 100
 }
 
 xp_to_next_lvl = {
@@ -61,42 +64,6 @@ The next four tables are used to set up random messages that will appear every
 time an action is taken by a player. We use a random int to tell the game which
 message to ultimately display so it's entirely random
 '''
-
-# Create Random Rest Action Messages
-random_rest_messages = [
-    "You stare into the fire as time passes longer into the day...",                  # 0 index
-    "You feel the wind brush your skin as you sit and ponder your previous actions.", # 1 index
-    "You have decided it's better to rest right now.",                                # 2 index
-    "You decided to take a breather.",                                                # 3 index
-    "You rest for 1 hour."                                                            # 4 index
-    ]
-
-# Create Random Mining Action Messages
-random_mine_messages = [
-    "You mine for 1 hour.",
-    "You strike the rock with force!",
-    "You swing your pickaxe.",
-    "** loud pickaxe sounds **",
-    "You mine the rock hoping to find something of use..."
-    ]
-    
-# Create Random Fishing Action Messages   
-random_fish_messages = [
-    "You cast your line into the water.",
-    "You cast your line hoping to get some dinner tonight.",
-    "You never did like fishing that much...",
-    "You wait for a bite on your fishing line.",
-    "You fish for 1 hour."
-    ]
-    
-# Create Random Combat Action Messages
-random_combat_messages = [
-    "COMBAT: Take that, scum! HE-YAH!",
-    "COMBAT: Your steel strikes the enemy hard and true.",
-    "COMBAT: You get into a scuffle with a foe.",
-    "COMBAT: *Weapons and Combat Sounds*",
-    "COMBAT: You thrust your weapon."
-    ]
     
 random_mine_sounds = ["sounds/pickaxe1.wav", "sounds/pickaxe2.wav"]
 random_fish_sounds = ["sounds/fishing1.wav", "sounds/fishing2.wav"]
@@ -150,6 +117,18 @@ def level_check():
         cprint('XP not high enough for level up this time!' + '\n', 'red')
 
 '''
+Helper functions to print progress bars for the experience levels
+'''
+
+def print_bar(title, curr, max, color = 'white'):
+    scale = 0.2 if 'Health' in title else 1
+    # substrings to build output
+    progressEarned = int(curr * scale) * '\u2588'
+    progressRemaining = int((max - curr) * scale) * '\u2591'
+    print(title)
+    cprint(progressEarned + progressRemaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
+
+'''
 get_cur_stats():
 In order to avoid constantly retyping out the stats I need to display after every action
 We will just use a function that gets called after every action instead cuz efficient?
@@ -158,21 +137,20 @@ Not sure why the dictionaries used here didn't have to be 'global'?
 >> Is it because this function runs within a function that already has the global access?
 '''
 def get_cur_stats():
-    print('Energy: ', ply['energy'])
-    print('Health: ', ply['hp'], '\n')
+    print_bar('Energy: ', ply['energy'], ply['max_energy'], 'blue')
+    print_bar('Health: ', ply['hp'], ply['max_hp'], 'red')
     
     cprint('Player Experience:', 'yellow')
-    print('Mining XP: ', xp['mining'])
-    print('Fishing XP: ', xp['fishing'])
-    print('Combat XP: ', xp['combat'], '\n')
+    print_bar('Mining Level: ', xp['mining'], xp_to_next_lvl['mining'])
+    print_bar('Fishing Level: ', xp['fishing'], xp_to_next_lvl['fishing'])
+    print_bar('Combat Level: ', xp['combat'], xp_to_next_lvl['combat'])
+    print('\n')
     
     cprint('Player Levels:', 'yellow')
     print('Mining Level: ', skill_lvl['mining'])
     print('Fishing Level: ', skill_lvl['fishing'])
     print('Combat Level: ', skill_lvl['combat'], '\n')
-    
 
-        
     
 # This is most of the game's logic within a single function - please don't judge me
 def game_main():

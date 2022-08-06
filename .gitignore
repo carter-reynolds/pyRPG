@@ -1,0 +1,2 @@
+# Local cache doesn't need to be tracked by git
+__pycache__/

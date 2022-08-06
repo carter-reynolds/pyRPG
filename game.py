@@ -1,10 +1,9 @@
 import random as rand
 import time
-from termcolor import colored, cprint # pip3 install termcolor
-from playsound import playsound       # pip3 install playsound
+from termcolor import colored, cprint
+from playsound import playsound
 from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
 import os
-import sys
 
 '''
 This is a little 'game' I am making that is supposed to be a text-based survival game. 
@@ -13,28 +12,25 @@ There is little actual functionality currently, but there will be more eventuall
 Currently, this script probably only runs properly on Mac as the environment variables
 are specific to xterm-256color which is the Mac terminal. 
 
-Windows and Linux support to come at a later time.
+Windows support to come at a later time.
 '''
 
-os.system('clear') # Start with a fresh terminal
+os.system('clear')  # Start with a fresh terminal
 
-# I think I need this to clear terminal properly. Unsure but here it is anyways
-# Likely entirely broken for Windows, but easily handable
-
-#TODO: Add Windows CMD Prompt/Powershell Support
-os.environ['TERM'] = 'xterm-256color'   # Mac Term only
+# TODO: Add Windows CMD Prompt/Powershell Support
+os.environ['TERM'] = 'xterm-256color'
 
 # Common Value Dictionaries
 skill_lvl = {
-    "mining":0,
-    "fishing":0,
-    "combat":0
+    "mining": 0,
+    "fishing": 0,
+    "combat": 0
 }
 
 xp = {
-    "mining":0,
-    "fishing":0,
-    "combat":0
+    "mining": 0,
+    "fishing": 0,
+    "combat": 0
 }
 
 ply = {
@@ -73,27 +69,31 @@ level_check():
 Runs a check during every "rest" action to attempt and convert gained XP into a new level of any various skill.
 '''
 
+
 def level_check():
     
     global xp
     global skill_lvl
     global xp_to_next_lvl
-    
-    
-    os.system('clear') # Clean the terminal again!
+
+    os.system('clear')  # Clean the terminal again!
     
     cprint('You sit down to ponder everything you\'ve learned up to this point..... \n', 'yellow')
     
-    time.sleep(3)
-    
-    if xp['mining'] >= xp_to_next_lvl['mining']:
-        skill_lvl['mining'] += 1
-        mine_exp_new = xp['mining'] - xp_to_next_lvl['mining']
-        xp['mining'] = mine_exp_new
-        xp_to_next_lvl['mining'] += xp_to_next_lvl['mining']
+    time.sleep(3)  # Displays the above message on the screen for 3 seconds
+
+    '''
+    The next IFs are for converting XP per skill into a new level of any given skill
+    '''
+
+    if xp['mining'] >= xp_to_next_lvl['mining']:  # If current amount of mining xp > what is required for next level..
+        skill_lvl['mining'] += 1                                # Add mining +1 to mining level
+        mine_exp_new = xp['mining'] - xp_to_next_lvl['mining']  # current skill xp - xp spent to level up = mine_exp_new
+        xp['mining'] = mine_exp_new                             # Set that as the new amount of xp
+        xp_to_next_lvl['mining'] += xp_to_next_lvl['mining']    # Double the next level xp requirement (plan to balance)
         
-        cprint('Mining Leveled up to: ' + str(skill_lvl['mining']) + '\n', 'green')
-        cprint('Next Level up at: ' + str(xp_to_next_lvl['mining']) + ' XP\n', 'green')
+        cprint('Mining Leveled up to: ' + str(skill_lvl['mining']) + '\n', 'green')  # Tell the player they leveled up
+        cprint('Next Level up at: ' + str(xp_to_next_lvl['mining']) + ' XP\n', 'green')  # Print how much XP to next lvl
         
     elif xp['fishing'] >= xp_to_next_lvl['fishing']:
         skill_lvl['fishing'] += 1
@@ -110,23 +110,26 @@ def level_check():
         xp['combat'] = combat_exp_new
         xp_to_next_lvl['combat'] += xp_to_next_lvl['combat']
         
-        crint('Combat Leveled up to: ' + str(skill_lvl['combat']) + '\n', 'green')
+        cprint('Combat Leveled up to: ' + str(skill_lvl['combat']) + '\n', 'green')
         cprint('Next Level up at: ' + str(xp_to_next_lvl['combat']) + ' XP\n', 'green')
         
     else:
         cprint('XP not high enough for level up this time!' + '\n', 'red')
 
+
 '''
 Helper functions to print progress bars for the experience levels
 '''
 
-def print_bar(title, curr, max, color = 'white'):
+
+def print_bar(title, curr, max, color='white'):
     scale = 0.2 if 'Health' in title else 1
     # substrings to build output
-    progressEarned = int(curr * scale) * '\u2588'
-    progressRemaining = int((max - curr) * scale) * '\u2591'
+    progress_earned = int(curr * scale) * '\u2588'
+    progress_remaining = int((max - curr) * scale) * '\u2591'
     print(title)
-    cprint(progressEarned + progressRemaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
+    cprint(progress_earned + progress_remaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
+
 
 '''
 get_cur_stats():
@@ -136,15 +139,16 @@ We will just use a function that gets called after every action instead cuz effi
 Not sure why the dictionaries used here didn't have to be 'global'? 
 >> Is it because this function runs within a function that already has the global access?
 '''
+
+
 def get_cur_stats():
     print_bar('Energy: ', ply['energy'], ply['max_energy'], 'blue')
     print_bar('Health: ', ply['hp'], ply['max_hp'], 'red')
     
     cprint('Player Experience:', 'yellow')
-    print_bar('Mining Level: ', xp['mining'], xp_to_next_lvl['mining'])
-    print_bar('Fishing Level: ', xp['fishing'], xp_to_next_lvl['fishing'])
-    print_bar('Combat Level: ', xp['combat'], xp_to_next_lvl['combat'])
-    print('\n')
+    print_bar('Mining XP: ', xp['mining'], xp_to_next_lvl['mining'])
+    print_bar('Fishing XP: ', xp['fishing'], xp_to_next_lvl['fishing'])
+    print_bar('Combat XP: ', xp['combat'], xp_to_next_lvl['combat'])
     
     cprint('Player Levels:', 'yellow')
     print('Mining Level: ', skill_lvl['mining'])
@@ -160,37 +164,35 @@ def game_main():
     global skill_lvl
     global xp_to_next_lvl
     
-     # These are the only input values that can be used in the game currently
+    # These are the only input values that can be used in the game currently
     valid_inputs = ["rest", "mine", "fish", "combat"]
-    
 
-    while True: # Keeps the game going after every action (always truthy unless error)
-        
+    while True:  # Keeps the game going after every action (always truthy unless error)
+
         get_input = input("What Action Are You Doing? (rest, mine, fish, combat)\n\n")
-        os.system('clear') # Clean the terminal again!
+        os.system('clear')  # Clean the terminal again!
         
-        if ply['energy'] > 0: # If player_energy is greater than 0, keep going
+        if ply['energy'] > 0:  # If player_energy is greater than 0, keep going
         
-            if get_input in valid_inputs: # If input is in valid_inputs, keep going
+            if get_input in valid_inputs:  # If input is in valid_inputs, keep going
             
                 if get_input == "rest": 
                     
                     # Display a random rest message
-                    message_rest = random_rest_messages[(rand.randint(0,4))]
+                    message_rest = random_rest_messages[(rand.randint(0, 4))]
                     print(message_rest, '\n')
                     
                     ply['energy'] += 1
                     
-                    #Check for possible level increases
+                    # Check for possible level increases
                     level_check()
                     
-                    #Show full stats
+                    # Show full stats
                     get_cur_stats()
-                    
-                    
+
                 elif get_input == "mine":
                     
-                    #Display a random mine message
+                    # Display a random mine message
                     message_mine = random_mine_messages[(rand.randint(0,4))]
                     print(message_mine, '\n')
                     
@@ -198,16 +200,15 @@ def game_main():
                     sound_mine = random_mine_sounds[(rand.randint(0,1))]
                     # playsound(sound_mine)
                     
-                    #Decrease energy by 1, increase mining XP by 1, display full stats
+                    # Decrease energy by 1, increase mining XP by 1, display full stats
                     ply['energy'] -= 1
                     xp['mining'] += 1 
 
                     get_cur_stats()
-                    
-                    
+
                 elif get_input == "fish":
                     
-                    #Display random fish message
+                    # Display random fish message
                     message_fish = random_fish_messages[(rand.randint(0,4))]
                     print(message_fish, '\n')
                     
@@ -219,19 +220,17 @@ def game_main():
                     xp['fishing'] += 1
 
                     get_cur_stats()
-                    
-                
-                elif get_input == "combat": # Should rename to "combat" instead?
+
+                elif get_input == "combat":
 
                     message_combat = random_combat_messages[(rand.randint(0,4))]
                     print(message_combat, '\n')
 
                     ply['energy'] -= 1
-                    xp['combat'] += 1 # Add 1 to Combat XP
+                    xp['combat'] += 1  # Add 1 to Combat XP
 
                     get_cur_stats()
-                    
-                    
+
             else:
                 cprint("Not a Valid Input! Try again.", 'red')
                 
@@ -245,5 +244,6 @@ def game_main():
             ply['energy'] += 1  
             level_check()
             get_cur_stats()                     
-     
-game_main() # Starts the game
+
+
+game_main()  # Starts the game

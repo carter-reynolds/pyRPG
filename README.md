@@ -21,10 +21,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -57,8 +53,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-
-
 A very work in progress project build in Python in an attempt 
 to replicate a text-based RPG game.
 
@@ -66,8 +60,7 @@ to replicate a text-based RPG game.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Documentation to come, but you can follow the steps below to get a copy running for development or tinkering.
 
 ### Prerequisites
 

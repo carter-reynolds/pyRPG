@@ -10,5 +10,8 @@ class Player:
     def gain_energy(self, amount):
         self.current_energy += amount
 
+    def lose_energy(self, amount):
+        self.current_energy -= amount
+
     def rest(self):
         self.current_energy = self.max_energy

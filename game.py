@@ -1,9 +1,12 @@
 import random as rand
-from termcolor import colored, cprint
-from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
+import platform
+import os
 from classes.Player import Player
 from classes.Skill import Skill
-import os
+from savegame import save_player_data
+from termcolor import colored, cprint
+from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
+
 
 '''
 This is a little 'game' I am making that is supposed to be a text-based survival game. 
@@ -15,10 +18,6 @@ are specific to xterm-256color which is the Mac terminal.
 Windows support to come at a later time.
 '''
 
-os.system('clear')  # Start with a fresh terminal
-
-# TODO: Add Windows CMD Prompt/Powershell Support
-os.environ['TERM'] = 'xterm-256color'
 
 # TODO: USE THESE
 environment_variables = {
@@ -28,6 +27,13 @@ environment_variables = {
     "weather": ["sunny", "light_rain", "storm", "snow"]
 }
 
+def clear_term():
+    system_type = platform.system()
+
+    if system_type == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def print_bar(title, curr, max, level, color='white'):
     if level is None:
@@ -40,7 +46,7 @@ def print_bar(title, curr, max, level, color='white'):
     progress_earned = int(curr * scale) * '\u2588'
     progress_remaining = int((max - curr) * scale) * '\u2591'
     print(title + level_text)
-    cprint('XP: ' + progress_earned + progress_remaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
+    cprint(progress_earned + progress_remaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
 
 
 '''
@@ -80,24 +86,39 @@ def game_main():
     ]
     
     # These are the only input values that can be used in the game currently
-    valid_inputs = ["rest", "mine", "fish", "combat"]
+    valid_inputs = ["rest", "mine", "fish", "combat", "save-test", "actions"]
 
     while True:  # Keeps the game going after every action (always truthy unless error)
 
-        get_input = input("What Action Are You Doing? (rest, mine, fish, combat)\n\n")
-        os.system('clear')  # Clean the terminal again!
+        get_input = input("What action do you want to perform? (Type: 'actions' to display actions.)\n\n")
         
-        if player.current_energy > 0:  # If player_energy is greater than 0, keep going
+        clear_term()
         
-            if get_input in valid_inputs:  # If input is in valid_inputs, keep going
-            
-                if get_input == "rest": 
+        if player.current_energy > 0:
+            if get_input in valid_inputs:
+                if get_input == "rest":
 
-                    # Display a random rest message
                     message_rest = random_rest_messages[(rand.randint(0, 4))]
                     print(message_rest, '\n')
 
                     player.rest()
+
+                    get_cur_stats(skills_list, player)
+
+                elif get_input == "save-test":
+                    save_player_data(
+                        player.name, 
+                        player.current_energy,
+                        player.max_energy,
+                        player.current_hp,
+                        player.max_hp,
+                        player.currency
+                    )
+
+                elif get_input == "actions":
+
+                    print(valid_inputs)
+
                     get_cur_stats(skills_list, player)
 
                 elif get_input == "mine":
@@ -105,8 +126,8 @@ def game_main():
                     message_mine = random_mine_messages[(rand.randint(0,4))]
                     print(message_mine, '\n')
                     
-                    # Decrease energy by 1, increase mining XP by 1, display full stats
-                    player.current_energy -= 1
+                    player.lose_energy(1)
+
                     for skill in skills_list:
                         if skill.name == "Mining":
                             skill.gain_xp(1)
@@ -118,7 +139,8 @@ def game_main():
                     message_fish = random_fish_messages[(rand.randint(0,4))]
                     print(message_fish, '\n')
 
-                    player.current_energy -= 1
+                    player.lose_energy(1)
+
                     for skill in skills_list:
                         if skill.name == "Fishing":
                             skill.gain_xp(1)
@@ -130,11 +152,11 @@ def game_main():
                     message_combat = random_combat_messages[(rand.randint(0,4))]
                     print(message_combat, '\n')
 
-                    player.current_energy -= 1
+                    player.lose_energy(1)
+
                     for skill in skills_list:
                         if skill.name == "Combat":
                             skill.gain_xp(1)
-                            skill.level_check()
 
                     get_cur_stats(skills_list, player)
 
@@ -142,8 +164,8 @@ def game_main():
                 cprint("Not a Valid Input! Try again.", 'red')
                 
         elif player.current_energy == 0 and get_input != "rest":
-            cprint("You are too tired. Consider resting!", 'red') 
-            
+            cprint("You are too tired. Consider resting!", 'red')
+
         else:   
             message_rest = random_rest_messages[(rand.randint(0, 4))]
             print(message_rest)
@@ -151,5 +173,6 @@ def game_main():
             player.rest()
             get_cur_stats(skills_list, player)
 
+clear_term()    # Clear the terminal for new game        
+game_main()     # Start the game
 
-game_main()  # Starts the game

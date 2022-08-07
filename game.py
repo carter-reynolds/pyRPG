@@ -1,7 +1,8 @@
 import random as rand
+import tkinter as tk
 import platform
 import os
-import graphics.map
+from classes.Map import Map
 from classes.Player import Player
 from classes.Skill import Skill
 from savegame import save_player_data, save_skill_data
@@ -106,6 +107,14 @@ def game_main():
     
     # These are the only input values that can be used in the game currently
     valid_inputs = ["rest", "mine", "fish", "combat", "save-test", "actions"]
+
+    # Create window for tkinter
+    gameWindow = tk.Tk()
+
+
+    map = Map(gameWindow)
+    map.display()
+    map.populate(10,10)
 
     while True:  # Keeps the game going after every action (always truthy unless error)
         

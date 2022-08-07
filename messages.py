@@ -27,9 +27,9 @@ random_fish_messages = [
     
 # Create Random Combat Action Messages
 random_combat_messages = [
-    "COMBAT: Take that, scum! HE-YAH!",
-    "COMBAT: Your steel strikes the enemy hard and true.",
-    "COMBAT: You get into a scuffle with a foe.",
-    "COMBAT: *Weapons and Combat Sounds*",
-    "COMBAT: You thrust your weapon."
+    "Take that, scum! HE-YAH!",
+    "Your steel strikes the enemy hard and true.",
+    "You get into a scuffle with a foe.",
+    "*Weapons and Combat Sounds*",
+    "You thrust your weapon."
     ]

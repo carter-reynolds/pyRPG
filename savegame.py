@@ -8,17 +8,37 @@ import pandas as pd
 #TODO: Data is saving to a json file, now we need a method to load that json file and set variables
 def save_player_data(name, cur_energy, max_energy, cur_hp, max_hp, currency):
 	
-	data = {
-		"name": name,
-		"energy": cur_energy,
-		"max_energy": max_energy,
-		"hp": cur_hp,
-		"max_hp": max_hp,
-		"currency": currency
+	data_player = {
+		"player_name": name,
+		"player_energy": cur_energy,
+		"player_max_energy": max_energy,
+		"player_hp": cur_hp,
+		"player_max_hp": max_hp,
+		"player_currency": currency
 	}
 
-	player_data_df = pd.DataFrame([data])
+	player_data_df = pd.DataFrame([data_player])
 
-	player_data_df.to_json(r'player_data.json', orient='index')
+	print('Player data to save: \n', player_data_df, '\n')
 
-# TODO: Save Skill data to another dataframe, merge both together.
+	player_data_df.to_json(r'./save/player_data.json', orient='index')
+
+def save_skill_data(skills):
+
+	date_skills = []
+
+	for skill in skills:
+		date_skills.append(
+			{
+				"skill_name":skill.name,
+				"skill_current_xp": skill.current_xp,
+				"skill_xp_to_next_level": skill.xp_to_next_lvl,
+				"skill_current_level": skill.current_level
+			}
+		)
+
+	skill_data_df = pd.DataFrame(date_skills)
+
+	print('Skill data to save: \n', skill_data_df)
+
+	skill_data_df.to_json(r'./save/skill_data.json', orient='index')

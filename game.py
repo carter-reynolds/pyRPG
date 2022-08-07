@@ -3,7 +3,7 @@ import platform
 import os
 from classes.Player import Player
 from classes.Skill import Skill
-from savegame import save_player_data
+from savegame import save_player_data, save_skill_data
 from termcolor import colored, cprint
 from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
 
@@ -122,6 +122,9 @@ def game_main():
                         player.current_hp,
                         player.max_hp,
                         player.currency
+                    )
+                    save_skill_data(
+                        skills_list
                     )
 
                 elif get_input == "actions":

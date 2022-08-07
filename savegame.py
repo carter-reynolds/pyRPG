@@ -6,15 +6,14 @@ import pandas as pd
 # You can see all player data by typing 'save-test' within the game
 
 #TODO: Data is saving to a json file, now we need a method to load that json file and set variables
-def save_player_data(name, cur_energy, max_energy, cur_hp, max_hp, currency):
-	
+def save_player_data(player):
 	data_player = {
-		"player_name": name,
-		"player_energy": cur_energy,
-		"player_max_energy": max_energy,
-		"player_hp": cur_hp,
-		"player_max_hp": max_hp,
-		"player_currency": currency
+		"name": player.name,
+		"energy": player.energy,
+		"max_energy": player.max_energy,
+		"hp": player.hp,
+		"max_hp": player.max_hp,
+		"currency": player.currency
 	}
 
 	player_data_df = pd.DataFrame([data_player])

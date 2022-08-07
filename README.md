@@ -64,21 +64,7 @@ Documentation to come, but you can follow the steps below to get a copy running 
 
 ### Prerequisites
 
-This project requires Python 3.7 or greater to be installed and only a few
-extra modules which are outlined below.
-
-* termcolor
-  ```sh
-  pip3 install termcolor
-  ```
-* playsound
-  ```sh
-  pip3 install playsound
-  ```
-* pandas
-  ```sh
-  pip3 install pandas
-  ```
+This project uses Python 3.7 and the `pip` package manager. Follow the instructions for your OS on [on Pythons website](https://www.python.org/downloads/)
 
 ### Installation
 
@@ -88,9 +74,7 @@ extra modules which are outlined below.
    ```
 2. Install required modules
    ```sh
-   pip3 install termcolor
-   pip3 install playound
-   pip3 install pandas
+   pip3 install -r requirements.txt
    ```
 3. Launch the main game script
    ```sh
@@ -145,6 +129,24 @@ See the [open issues](https://github.com/carter-reybolds/pyRPG/issues) for a ful
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+
+## Package management
+Using `pipreqs` our required modules are stored in `requirements.txt`
+
+### Install pipreqs
+```
+pip3 install pipreqs
+```
+
+### Update requirements after adding a dependency
+```
+pipreqs .
+```
+
+### Install all required packages
+```
+pip3 install -r requirements.txt
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing

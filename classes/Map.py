@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 import random as rand
 
 class Tile:
@@ -38,9 +37,6 @@ def randomTile():
     return Tile('default', 'white')
 
 
-style = ttk.Style()
-style.configure("BW.TLabel", foreground="red", background="red", width=2, height=2)
-
 class Map:
     def __init__(self, container):
         self.map = tk.Frame(container)
@@ -54,6 +50,6 @@ class Map:
                 tile = randomTile()
                 print(tile.color)
 
-                square = ttk.Button(self.map, text='', style="BW.TLabel")
+                square = tk.Button(self.map, text='', width=2, height=2)
                 square.grid(column=i, row=j)
 

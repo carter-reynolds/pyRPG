@@ -64,7 +64,7 @@ Documentation to come, but you can follow the steps below to get a copy running 
 
 ### Prerequisites
 
-This project requires Python 3.7 or greater to be installed and only a couple of
+This project requires Python 3.7 or greater to be installed and only a few
 extra modules which are outlined below.
 
 * termcolor
@@ -74,6 +74,10 @@ extra modules which are outlined below.
 * playsound
   ```sh
   pip3 install playsound
+  ```
+* pandas
+  ```sh
+  pip3 install pandas
   ```
 
 ### Installation
@@ -86,6 +90,7 @@ extra modules which are outlined below.
    ```sh
    pip3 install termcolor
    pip3 install playound
+   pip3 install pandas
    ```
 3. Launch the main game script
    ```sh
@@ -162,6 +167,8 @@ Don't forget to give the project a star! Thanks again!
 
 Coming soon... It's a work in progress as things are very likely to change 
 and move around often during this stage of development.
+
+Feel free to post a question issue if you need help navigating the current code.
 
 <!-- CONTACT -->
 ## Contact

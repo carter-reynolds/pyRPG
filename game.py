@@ -1,12 +1,12 @@
 import random as rand
 import platform
 import os
+import graphics.map
 from classes.Player import Player
 from classes.Skill import Skill
 from savegame import save_player_data, save_skill_data
 from termcolor import colored, cprint
 from messages import random_rest_messages, random_mine_messages, random_fish_messages, random_combat_messages
-
 
 '''
 This is a little 'game' I am making that is supposed to be a text-based survival game. 
@@ -41,12 +41,22 @@ def print_bar(title, curr, max, level, color='white'):
     else:
         level_text = " Lvl. " + str(level)
 
-    scale = 0.2 if 'Health' in title else 1
-    # substrings to build output
-    progress_earned = int(curr * scale) * '\u2588'
-    progress_remaining = int((max - curr) * scale) * '\u2591'
+    # all bars are 20 chars long, scale the given values
+    bar_width = 20
+    scale = bar_width / max
+    progress_earned = int(curr * scale)
+    progress_remaining = int((max - curr) * scale)
+
+    # account for rounding
+    if (progress_earned + progress_remaining < bar_width):
+        progress_remaining += 1
+
+    # build strings for the bar itself
+    earned_bar = progress_earned * '\u2588'
+    remaining_bar = progress_remaining * '\u2591'
+
     print(title + level_text)
-    cprint(progress_earned + progress_remaining + ' ' + str(curr) + '/' + str(max) + '\n', color)
+    cprint('XP: ' + earned_bar + remaining_bar + ' ' + str(curr) + '/' + str(max) + '\n', color)
 
 
 '''

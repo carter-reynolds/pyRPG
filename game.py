@@ -71,13 +71,13 @@ Not sure why the dictionaries used here didn't have to be 'global'?
 
 def get_cur_stats(skills_list, player):
 
-    print_bar('Energy', player.current_energy, player.max_energy, None, 'blue')
-    print_bar('Health', player.current_hp, player.max_hp, None, 'red')
+    print_bar('Energy', player.energy, player.max_energy, None, 'blue')
+    print_bar('Health', player.hp, player.max_hp, None, 'red')
 
     print(colored('Player Experience: \n', 'yellow', attrs=['bold', 'underline']))
 
     for skill in skills_list:
-        print_bar(skill.name, skill.current_xp, skill.xp_to_next_lvl, skill.current_level)
+        print_bar(skill.name, skill.xp, skill.xp_to_level_up, skill.level)
 
     print('\n')
 
@@ -113,7 +113,8 @@ def game_main():
         
         clear_term()
         title_text()
-        if player.current_energy > 0:
+
+        if player.energy > 0:
             if get_input in valid_inputs:
                 if get_input == "rest":
 
@@ -125,18 +126,11 @@ def game_main():
                     get_cur_stats(skills_list, player)
 
                 elif get_input == "save-test":
-                    save_player_data(
-                        player.name, 
-                        player.current_energy,
-                        player.max_energy,
-                        player.current_hp,
-                        player.max_hp,
-                        player.currency
-                    )
+                    save_player_data(player)
                     save_skill_data(
                         skills_list
                     )
-
+                    
                 elif get_input == "actions":
 
                     print('Action List: \n', valid_inputs, '\n')
@@ -185,7 +179,7 @@ def game_main():
             else:
                 cprint("Not a Valid Input! Try again.", 'red')
                 
-        elif player.current_energy == 0 and get_input != "rest":
+        elif player.energy == 0 and get_input != "rest":
             cprint("You are too tired. Consider resting!", 'red')
 
         else:   

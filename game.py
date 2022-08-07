@@ -71,9 +71,18 @@ def get_cur_stats(skills_list, player):
 
     print('\n')
 
+def title_text():
+    welcome_text = 'pyRPG: A text-based RPG that no one asked for!'
+    box_char = '*'
+    print(box_char*(len(welcome_text)+4))
+    print(box_char,welcome_text,box_char)
+    print(box_char*(len(welcome_text)+4), '\n\n')
+
 
 # This is most of the game's logic within a single function - please don't judge me
 def game_main():
+
+    title_text()
 
     player_name_input = input("What is your characters name?:")
 
@@ -89,11 +98,11 @@ def game_main():
     valid_inputs = ["rest", "mine", "fish", "combat", "save-test", "actions"]
 
     while True:  # Keeps the game going after every action (always truthy unless error)
-
+        
         get_input = input("What action do you want to perform? (Type: 'actions' to display actions.)\n\n")
         
         clear_term()
-        
+        title_text()
         if player.current_energy > 0:
             if get_input in valid_inputs:
                 if get_input == "rest":
@@ -117,7 +126,7 @@ def game_main():
 
                 elif get_input == "actions":
 
-                    print(valid_inputs)
+                    print('Action List: \n', valid_inputs, '\n')
 
                     get_cur_stats(skills_list, player)
 

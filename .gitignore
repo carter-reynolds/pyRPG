@@ -1,2 +1,5 @@
 # Local cache doesn't need to be tracked by git
 __pycache__/
+
+# Neither does save game files
+player_data.json

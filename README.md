@@ -79,7 +79,11 @@ This project uses Python 3.7 and the `pip` package manager. Follow the instructi
 3. Launch the main game script
    ```sh
    cd path/to/repo
-   python3 game.py
+   ## old version that will be deleted soon
+   python3 play.py
+
+   ## new version using pygame
+   python3 play_new.py
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -140,7 +144,7 @@ pip3 install pipreqs
 
 ### Update requirements after adding a dependency
 ```
-pipreqs .
+pipreqs . --force
 ```
 
 ### Install all required packages
